@@ -15,6 +15,15 @@ export default defineConfig([
   },
   tseslint.configs.recommended,
   {
+    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+    rules: {
+      "linebreak-style": ["error", "unix"],
+      quotes: ["error", "single"],
+      semi: ["error", "always"],
+      "@typescript-eslint/no-empty-interface": "off",
+    },
+  },
+  {
     files: ["**/*.json"],
     plugins: { json },
     language: "json/json",
@@ -37,10 +46,5 @@ export default defineConfig([
     plugins: { css },
     language: "css/css",
     extends: ["css/recommended"],
-  },
-  {
-    rules: {
-      semi: ["warn", "always"],
-    },
   },
 ]);
