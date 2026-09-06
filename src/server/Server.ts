@@ -1,10 +1,11 @@
 import express from "express";
 import "dotenv/config";
 
-const appServer = express();
+import { router } from "./routes/index.js";
 
-appServer.delete("/teste", (__, res) => {
-  return res.send("Olá, DEV!");
-});
+const server = express();
 
-export { appServer };
+server.use(express.json());
+server.use(router);
+
+export { server };
