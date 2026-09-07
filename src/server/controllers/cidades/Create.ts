@@ -13,13 +13,21 @@ const bodyValidation: yup.ObjectSchema<ICidade> = yup.object({
 export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
   let validatedDate: ICidade | undefined = undefined;
   try {
-    validatedDate = await bodyValidation.validate(req.body);
+    validatedDate = await bodyValidation.validate(req.body, {
+      abortEarly: false,
+    });
   } catch (erro) {
     const yupError = erro as yup.ValidationError;
+    const validationErrors: Record<string, string> = {};
 
-    return res.json({
+    yupError.inner.forEach((error) => {
+      if (!error.path) return;
+      validationErrors[error.path] = error.message;
+    });
+
+    return res.status(StatusCodes.BAD_REQUEST).json({
       errors: {
-        default: yupError.message,
+        default: validationErrors,
       },
     });
   }
